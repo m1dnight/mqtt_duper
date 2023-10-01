@@ -24,7 +24,7 @@ defmodule MqttDuper.MixProject do
     [
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:emqtt, github: "emqx/emqtt", tag: "1.4.4", system_env: [{"BUILD_WITHOUT_QUIC", "1"}]},
-      {:styler, "~> 0.5", only: [:dev, :test], runtime: false},
+      {:styler, "~> 0.9", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.3", only: [:dev], runtime: false}
     ]
   end
