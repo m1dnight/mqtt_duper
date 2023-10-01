@@ -1,0 +1,75 @@
+variables:
+  DOCKER_DRIVER: overlay2
+  # Create the certificates inside this directory for both the server
+  # and client. The certificates used by the client will be created in
+  # /certs/client so we only need to share this directory with the
+  # volume mount in `config.toml`.
+  DOCKER_TLS_CERTDIR: "/certs"
+  MIX_ENV: "test"
+
+stages:
+  - build
+  - test
+  - docker
+  - deploy
+
+cache:
+  paths:
+    - _build
+    - deps
+
+compile:
+  before_script:
+    - mix local.hex --force
+    - mix local.rebar --force
+  image: elixir:1.15
+  stage: build
+  tags:
+    - loomy.be
+  script:
+    - mix deps.get
+    - mix compile --warnings-as-errors
+
+# test:
+#   before_script:
+#     - mix local.hex --force
+#     - mix local.rebar --force
+#     - mix deps.get
+#   services:
+#     - postgres:latest
+#   image: elixir:1.15
+#   stage: test
+#   tags:
+#     - loomy.be
+#   script:
+#     - mix test
+
+lint:
+  before_script:
+    - mix local.hex --force
+    - mix local.rebar --force
+  image: elixir:1.15
+  stage: test
+  tags:
+    - loomy-be
+  script:
+    - mix deps.get
+    - mix format --check-formatted
+    - mix credo
+    - mix style --check-styled 
+
+dockerbuild:
+  services:
+    - docker:dind
+  image: docker
+  stage: docker
+  tags:
+    - loomy-be
+  script:
+    - echo $CI_REGISTRY
+    - echo $CI_REGISTRY_USER
+    - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY};
+    - docker build --tag $CI_REGISTRY_IMAGE:latest .
+    - docker tag $CI_REGISTRY_IMAGE:latest $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
+    - docker push $CI_REGISTRY_IMAGE:latest

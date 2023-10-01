@@ -3,8 +3,7 @@ import Config
 if config_env() == :prod do
   # assert the necessary env vars
   env =
-    ["MQTT_DESTINATION_HOST", "MQTT_SOURCE_HOST"]
-    |> Enum.map(fn var ->
+    Map.new(["MQTT_DESTINATION_HOST", "MQTT_SOURCE_HOST"], fn var ->
       key = var |> String.downcase() |> String.to_atom()
 
       value =
@@ -15,7 +14,6 @@ if config_env() == :prod do
 
       {key, value}
     end)
-    |> Enum.into(%{})
 
   config :mqtt_duper, :source,
     start: false,
