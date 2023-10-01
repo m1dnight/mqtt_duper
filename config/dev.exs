@@ -16,8 +16,8 @@ config :mqtt_duper, :source,
   ssl_opts: [
     verify: :verify_none,
     cacertfile: "./certs/source/root.crt",
-    certfile: "./certs/source/data-api.crt",
-    keyfile: "./certs/source/data-api.key"
+    certfile: "./certs/source/client.crt",
+    keyfile: "./certs/source/client.key"
   ]
 
 config :mqtt_duper, :destination,
@@ -31,6 +31,6 @@ config :mqtt_duper, :destination,
   ssl_opts: [
     verify: :verify_none,
     cacertfile: "./certs/destination/root.crt",
-    certfile: "./certs/destination/data-api.crt",
-    keyfile: "./certs/destination/data-api.key"
+    certfile: "./certs/destination/client.crt",
+    keyfile: "./certs/destination/client.key"
   ]

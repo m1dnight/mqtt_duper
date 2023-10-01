@@ -21,10 +21,15 @@ defmodule MqttDuper.Listener do
 
   def init(config: config, handler: handler) do
     Logger.debug("connecting to mqtt with options: #{inspect(config)}")
-    {:ok, pid} = :emqtt.start_link(config)
 
-    state = %{pid: pid, config: config, handler: handler}
-    {:ok, state, {:continue, :start_emqtt}}
+    case :emqtt.start_link(config) do
+      {:ok, pid} ->
+        state = %{pid: pid, config: config, handler: handler}
+        {:ok, state, {:continue, :start_emqtt}}
+
+      {:error, _} ->
+        {:stop, :failed_to_connect_to_mqtt}
+    end
   end
 
   def handle_continue(:start_emqtt, %{pid: pid, config: _config} = state) do
@@ -54,8 +59,11 @@ defmodule MqttDuper.Listener do
   def handle_info(_m, %{handler: nil} = state) do
     {:noreply, state}
   end
+
   def handle_info(m, %{handler: handler} = state) do
     handler.handle_message(m, state)
     {:noreply, state}
   end
 end
+
+# asdf install elixir 1.15.6-otp-26  ; asdf global elixir 1.15.6-otp-26 ; asdf install erlang 26.1.1  ; asdf global erlang 26.1.1 ; asdf local erlang 26.1.1

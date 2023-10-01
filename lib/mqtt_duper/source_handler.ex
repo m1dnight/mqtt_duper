@@ -12,7 +12,7 @@ defmodule MqttDuper.SourceHandler do
           {:ok, :forwarded} | {:ok, :ignored} | {:error, term()}
   def handle_message({:publish, %{topic: _, payload: _}} = m, _state) do
     if forward?(m) do
-      Logger.debug("forwarding #{inspect(m)}")
+      # Logger.debug("forwarding #{inspect(m)}")
       forward_message(m)
       {:ok, :forwarded}
     else

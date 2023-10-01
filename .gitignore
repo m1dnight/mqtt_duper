@@ -26,3 +26,5 @@ mqtt_duper-*.tar
 /tmp/
 certs/
 .iex.exs
+
+.elixir_ls/
