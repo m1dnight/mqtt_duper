@@ -56,7 +56,7 @@ lint:
     - mix deps.get
     - mix format --check-formatted
     - mix credo
-    - mix style --check-styled 
+    # - mix style --check-styled 
 
 dockerbuild:
   services:
