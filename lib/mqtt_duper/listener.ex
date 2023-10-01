@@ -54,6 +54,7 @@ defmodule MqttDuper.Listener do
   def handle_info(_m, %{handler: nil} = state) do
     {:noreply, state}
   end
+
   def handle_info(m, %{handler: handler} = state) do
     handler.handle_message(m, state)
     {:noreply, state}

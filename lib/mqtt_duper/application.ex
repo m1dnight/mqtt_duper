@@ -15,8 +15,7 @@ defmodule MqttDuper.Application do
          config: Application.get_env(:mqtt_duper, :source),
          handler: MqttDuper.SourceHandler
        ]},
-      {MqttDuper.Listener,
-       [name: :destination, config: Application.get_env(:mqtt_duper, :destination), handler: nil]}
+      {MqttDuper.Listener, [name: :destination, config: Application.get_env(:mqtt_duper, :destination), handler: nil]}
     ]
 
     # ignore the emqtt log messages
