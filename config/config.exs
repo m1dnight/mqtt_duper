@@ -1,6 +1,5 @@
 import Config
 
-
 config :mqtt_duper, :filters,
   topics: [
     ~r/.*/
