@@ -8,8 +8,10 @@ defmodule MqttDuper.Application do
   @impl true
   @spec start(any, any) :: {:error, any} | {:ok, pid}
 
-  IO.puts :code.root_dir()
-  File.ls(:code.root_dir())
+  IO.puts """
+  Root directory: #{:code.root_dir()}
+  Config file: #{File.read!(:code.root_dir() <> "/mqtt_endpoints.exs"))}
+  """
   def start(_type, _args) do
     children = [
       {MqttDuper.Listener,

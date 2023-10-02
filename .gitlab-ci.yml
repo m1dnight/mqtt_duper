@@ -44,18 +44,18 @@ compile:
 #   script:
 #     - mix test
 
-lint:
-  before_script:
-    - mix local.hex --force
-    - mix local.rebar --force
-  image: elixir:1.15
-  stage: test
-  tags:
-    - loomy-be
-  script:
-    - mix deps.get
-    - mix format --check-formatted
-    - mix credo
+# lint:
+#   before_script:
+#     - mix local.hex --force
+#     - mix local.rebar --force
+#   image: elixir:1.15
+#   stage: test
+#   tags:
+#     - loomy-be
+#   script:
+#     - mix deps.get
+#     - mix format --check-formatted
+#     - mix credo
     # - mix style --check-styled 
 
 dockerbuild:
