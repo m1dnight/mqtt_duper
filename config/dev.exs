@@ -15,14 +15,14 @@ config :mqtt_duper, :source,
   ssl: true,
   ssl_opts: [
     verify: :verify_none,
-    cacertfile: "./certs/source/root.crt",
-    certfile: "./certs/source/client.crt",
-    keyfile: "./certs/source/client.key"
+    cacertfile: "/Users/christophe/SynologyDrive/certs/production.loomy.be/root.crt",
+    certfile: "/Users/christophe/SynologyDrive/certs/production.loomy.be/data-api.crt",
+    keyfile: "/Users/christophe/SynologyDrive/certs/production.loomy.be/data-api.key"
   ]
 
 config :mqtt_duper, :destination,
   start: false,
-  host: ~c"development.localdomain",
+  host: ~c"mqtt.development.loomy.be",
   port: 8883,
   clientid: "mqtt_duper_destination",
   clean_start: true,
@@ -30,7 +30,7 @@ config :mqtt_duper, :destination,
   ssl: true,
   ssl_opts: [
     verify: :verify_none,
-    cacertfile: "./certs/destination/root.crt",
-    certfile: "./certs/destination/client.crt",
-    keyfile: "./certs/destination/client.key"
+    cacertfile: "/Users/christophe/SynologyDrive/certs/development.loomy.be/root.crt",
+    certfile: "/Users/christophe/SynologyDrive/certs/development.loomy.be/data-api.crt",
+    keyfile: "/Users/christophe/SynologyDrive/certs/development.loomy.be/data-api.key"
   ]
