@@ -15,8 +15,8 @@ Build the application
 
 Run the application 
 
-    docker run -it --rm                                     \
-        -e MQTT_SOURCE_HOST=mqtt.production.loomy.be        \
-        -e MQTT_DESTINATION_HOST=mqtt.development.loomy.be  \
-        -v $(pwd)/certs:/app/certs                          \
+    docker run -it --rm                                                                     \
+        -v $(pwd)/rel/overlays/mqtt_endpoints.exs:/app/mqtt_duper/mqtt_endpoints.exs        \
+        -v /Users/christophe/SynologyDrive/certs/development.loomy.be:/certs/destination    \
+        -v /Users/christophe/SynologyDrive/certs/production.loomy.be:/certs/source          \
         mqtt_duper

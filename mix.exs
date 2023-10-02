@@ -9,7 +9,7 @@ defmodule MqttDuper.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       releases: [
-        prod: [
+        mqtt_duper: [
           config_providers: [
             {Config.Reader, {:system, "RELEASE_ROOT", "/mqtt_endpoints.exs"}}
           ]

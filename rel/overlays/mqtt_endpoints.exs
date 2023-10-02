@@ -5,9 +5,9 @@ config :mqtt_duper, :filters,
     ~r/.*/
   ]
 
-config :mqtt_duper, :source,
+  config :mqtt_duper, :source,
   start: false,
-  host: ~c"endpoint.com",
+  host: ~c"mqtt.production.loomy.be",
   port: 8883,
   clientid: "mqtt_duper_source",
   clean_start: true,
@@ -15,14 +15,14 @@ config :mqtt_duper, :source,
   ssl: true,
   ssl_opts: [
     verify: :verify_none,
-    cacertfile: "./certs/source/root.crt",
-    certfile: "./certs/source/client.crt",
-    keyfile: "./certs/source/client.key"
+    cacertfile: "/certs/source/root.crt",
+    certfile:   "/certs/source/data-api.crt",
+    keyfile:    "/certs/source/data-api.key"
   ]
 
 config :mqtt_duper, :destination,
   start: false,
-  host: ~c"endpoint.localdomain",
+  host: ~c"mqtt.development.loomy.be",
   port: 8883,
   clientid: "mqtt_duper_destination",
   clean_start: true,
@@ -30,7 +30,7 @@ config :mqtt_duper, :destination,
   ssl: true,
   ssl_opts: [
     verify: :verify_none,
-    cacertfile: "./certs/destination/root.crt",
-    certfile: "./certs/destination/client.crt",
-    keyfile: "./certs/destination/client.key"
+    cacertfile: "/certs/destination/root.crt",
+    certfile: "/certs/destination/data-api.crt",
+    keyfile: "/certs/destination/data-api.key"
   ]
