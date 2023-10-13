@@ -5,6 +5,8 @@ defmodule MqttDuper.Application do
 
   use Application
 
+  @blocked_names Application.compile_env(:mqtt_duper, :filtered_log_names, [])
+
   @impl true
   @spec start(any, any) :: {:error, any} | {:ok, pid}
 
@@ -22,11 +24,9 @@ defmodule MqttDuper.Application do
     ]
 
     # ignore the emqtt log messages
-    blocked_names = [:emqtt_source, :emqtt_destination]
-
     :logger.add_primary_filter(
       :emqtt_filter,
-      {&MqttDuper.LogFilter.filter/2, %{blocked_names: blocked_names}}
+      {&MqttDuper.LogFilter.filter/2, %{blocked_names: @blocked_names}}
     )
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -3,17 +3,19 @@ defmodule MqttDuper.SourceHandler do
   require Logger
 
   @type state :: %{pid: pid}
-  @type publish_message ::
-          {:publish, %{topic: String.t(), payload: String.t()}}
+  @type publish_message :: {:publish, %{topic: String.t(), payload: String.t()}}
 
   @filters Application.compile_env(:mqtt_duper, :filters, [])
+  @transformers Application.compile_env(:mqtt_duper, :transformers, [])
 
   @spec handle_message(publish_message, state) ::
           {:ok, :forwarded} | {:ok, :ignored} | {:error, term()}
   def handle_message({:publish, %{topic: _, payload: _}} = m, _state) do
     if forward?(m) do
-      # Logger.debug("forwarding #{inspect(m)}")
-      forward_message(m)
+      m
+      |> transform_topic()
+      |> forward_message()
+
       {:ok, :forwarded}
     else
       {:ok, :ignored}
@@ -26,6 +28,22 @@ defmodule MqttDuper.SourceHandler do
 
   #############################################################################
   # Helpers
+
+  @spec transform_topic(publish_message) :: publish_message
+  defp transform_topic(message) do
+    @transformers
+    |> Keyword.get(:topics, [])
+    |> Enum.reduce(message, fn {regex, replacement}, message ->
+      case message do
+        {:publish, m} ->
+          transformed = Map.update!(m, :topic, fn topic -> Regex.replace(regex, topic, replacement) end)
+          {:publish, transformed}
+
+        _ ->
+          message
+      end
+    end)
+  end
 
   @spec forward?(publish_message) :: true | false
   defp forward?(m) do
