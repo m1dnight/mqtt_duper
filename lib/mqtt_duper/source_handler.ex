@@ -42,14 +42,8 @@ defmodule MqttDuper.SourceHandler do
   # """
   @spec apply_transformer({Regex.t(), String.t()}, publish_message | any) :: publish_message | any
   defp apply_transformer({regex, replacement}, {:publish, message}) do
-    case message do
-      {:publish, m} ->
-        transformed = Map.update!(m, :topic, fn topic -> Regex.replace(regex, topic, replacement) end)
-        {:publish, transformed}
-
-      _ ->
-        message
-    end
+    transformed = Map.update!(message, :topic, fn topic -> Regex.replace(regex, topic, replacement) end)
+    {:publish, transformed}
   end
 
   defp apply_transformer(_transformer, message) do
