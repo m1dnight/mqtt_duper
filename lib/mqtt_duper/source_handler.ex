@@ -5,9 +5,6 @@ defmodule MqttDuper.SourceHandler do
   @type state :: %{pid: pid}
   @type publish_message :: {:publish, %{topic: String.t(), payload: String.t()}}
 
-  @filters Application.compile_env(:mqtt_duper, :filters, [])
-  @transformers Application.compile_env(:mqtt_duper, :transformers, [])
-
   @spec handle_message(publish_message, state) ::
           {:ok, :forwarded} | {:ok, :ignored} | {:error, term()}
   def handle_message({:publish, %{topic: _, payload: _}} = m, _state) do
@@ -31,7 +28,8 @@ defmodule MqttDuper.SourceHandler do
 
   @spec transform_topic(publish_message) :: publish_message
   defp transform_topic(message) do
-    @transformers
+    :mqtt_duper
+    |> Application.get_env(:transformers, [])
     |> Keyword.get(:topics, [])
     |> Enum.reduce(message, fn {regex, replacement}, message ->
       case message do
@@ -52,7 +50,8 @@ defmodule MqttDuper.SourceHandler do
 
   @spec forward_topic?(publish_message) :: true | false
   defp forward_topic?({:publish, %{topic: topic}}) do
-    @filters
+    :mqtt_duper
+    |> Application.get_env(:filters, [])
     |> Keyword.get(:topics, [])
     |> Enum.any?(fn topic_filter -> Regex.match?(topic_filter, topic) end)
   end
