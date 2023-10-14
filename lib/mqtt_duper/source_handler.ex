@@ -37,9 +37,9 @@ defmodule MqttDuper.SourceHandler do
     |> Enum.reduce(message, &apply_transformer/2)
   end
 
-  @doc """
-  Applies a transformer to the given message.
-  """
+  # @doc """
+  # Applies a transformer to the given message.
+  # """
   @spec apply_transformer({Regex.t(), String.t()}, publish_message | any) :: publish_message | any
   defp apply_transformer({regex, replacement}, {:publish, message}) do
     case message do
