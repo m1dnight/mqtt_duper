@@ -7,8 +7,10 @@ defmodule MqttDuper.SourceHandler do
 
   @spec handle_message(publish_message, state) ::
           {:ok, :forwarded} | {:ok, :ignored} | {:error, term()}
-  def handle_message({:publish, %{topic: _, payload: _}} = m, _state) do
+  def handle_message({:publish, %{topic: topic, payload: payload}} = m, _state) do
     if forward?(m) do
+      Logging.debug("forwarding #{topic} #{payload}")
+
       m
       |> transform_topic()
       |> forward_message()
@@ -78,8 +80,12 @@ defmodule MqttDuper.SourceHandler do
   @spec forward_message(publish_message) :: :ok | {:error, term()}
   defp forward_message({:publish, %{topic: topic, payload: payload}}) do
     case Process.whereis(:emqtt_destination) do
-      nil -> :ok
-      pid -> :emqtt.publish(pid, topic, payload)
+      nil ->
+        :ok
+
+      pid ->
+        Logging.debug("publishing #{topic} #{payload}")
+        :emqtt.publish(pid, topic, payload)
     end
   rescue
     e ->
