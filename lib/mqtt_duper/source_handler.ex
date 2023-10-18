@@ -17,6 +17,7 @@ defmodule MqttDuper.SourceHandler do
 
       {:ok, :forwarded}
     else
+      Logging.debug("ignoring #{topic} #{payload}")
       {:ok, :ignored}
     end
   end
