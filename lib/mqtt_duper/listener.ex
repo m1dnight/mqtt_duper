@@ -16,6 +16,7 @@ defmodule MqttDuper.Listener do
   @spec start_link([{:config, any} | {:handler, any}, ...]) ::
           :ignore | {:error, any} | {:ok, pid}
   def start_link(config: config, handler: handler) do
+    MqttDuper.Info.check_mqtt_config(config)
     GenServer.start_link(__MODULE__, config: config, handler: handler)
   end
 

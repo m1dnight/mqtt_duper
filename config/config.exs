@@ -1,20 +1,30 @@
 import Config
 
+#############################################################################
+# Logging Filters
+
 config :mqtt_duper,
   filtered_log_names: [
     :emqtt_source,
     :emqtt_destination
   ]
 
-config :mqtt_duper, :filters,
-  topics: [
-    ~r/^allowed/
-  ]
+#############################################################################
+# Mqtt Topic Filters
 
-config :mqtt_duper, :transformers,
-  topics: [
-    {~r/from/, "to"}
-  ]
+config :mqtt_duper, :filters, topics: []
+
+#############################################################################
+# Mqtt Topic Transformers
+
+config :mqtt_duper, :transformers, topics: []
+
+#############################################################################
+# Mqtt Endpoints
+
+config :mqtt_duper,
+  sources: [],
+  destinations: []
 
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
