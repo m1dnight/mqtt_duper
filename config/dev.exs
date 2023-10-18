@@ -4,10 +4,12 @@ import Config
 # Logging Filters
 
 config :mqtt_duper,
-  filtered_log_names: [
-    :emqtt_source,
-    :emqtt_destination
-  ]
+  logging: %{
+    ignored_pid_aliases: [
+      :emqtt_source,
+      :emqtt_destination
+    ]
+  }
 
 #############################################################################
 # Mqtt Topic Filters

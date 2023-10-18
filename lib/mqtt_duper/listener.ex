@@ -3,8 +3,6 @@ defmodule MqttDuper.Listener do
 
   use GenServer
 
-  require Logger
-
   def child_spec(name: name, config: config, handler: handler) do
     # %{id: MqttDuper.Listener, start: {MqttDuper.Listener, :start_link, [[]]}}
     %{
@@ -21,7 +19,7 @@ defmodule MqttDuper.Listener do
   end
 
   def init(config: config, handler: handler) do
-    Logger.debug("connecting to mqtt with options: #{inspect(config)}")
+    Logging.debug("connecting to mqtt with options: #{inspect(config)}")
 
     case :emqtt.start_link(config) do
       {:ok, pid} ->
