@@ -64,5 +64,3 @@ defmodule MqttDuper.Listener do
     {:noreply, state}
   end
 end
-
-# asdf install elixir 1.15.6-otp-26  ; asdf global elixir 1.15.6-otp-26 ; asdf install erlang 26.1.1  ; asdf global erlang 26.1.1 ; asdf local erlang 26.1.1
